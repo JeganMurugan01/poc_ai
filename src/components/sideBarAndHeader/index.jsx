@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa6";
+import { FaCheck, FaPlus } from "react-icons/fa6";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
 
 const SideBarHeader = ({
   tags,
@@ -9,16 +10,49 @@ const SideBarHeader = ({
   setNewTagName,
   addTag,
   handleRemoveTag,
+  handleFileSelect,
+  setSelectedTagId,
+  handleImageDelete,
 }) => {
   const [isAddingTag, setIsAddingTag] = useState(false);
+  const [tempTagId, setTempTagId] = useState("");
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleAddTag = () => {
     if (newTagName.trim() !== "") {
       addTag(newTagName);
-      setNewTagName(""); // Clear input field
-      setIsAddingTag(false); // Close input box
+      setNewTagName("");
+      setIsAddingTag(false);
     }
   };
+
+  const handleImageSelect = (index) => {
+    setSelectedImages((prevSelected) => {
+      if (prevSelected.includes(index)) {
+        return prevSelected.filter((i) => i !== index);
+      } else {
+        return [...prevSelected, index];
+      }
+    });
+  };
+
+  const handleDeleteSelectedImages = () => {
+    handleImageDelete(tempTagId, selectedImages);
+    setSelectedImages([]);
+  };
+
+  const handleSelectAllImages = () => {
+    const allImageIndices =
+      tags
+        .find((tag) => tag.id === tempTagId)
+        ?.images.map((_, index) => index) || [];
+    setSelectedImages(allImageIndices);
+  };
+
+  const filteredTags = tags.filter((tag) =>
+    tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
@@ -51,7 +85,11 @@ const SideBarHeader = ({
               </p>
             </div>
             <div className="flex items-center">
-              <div className="flex items-center ms-3"></div>
+              <div className="flex items-center ms-3 text-white ">
+                <button className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                  Train
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -95,34 +133,109 @@ const SideBarHeader = ({
                   </button>
                 </div>
               )}
-              {tags &&
-                tags.length > 0 &&
-                tags.map((tag) => {
+              <div className="p-2 mt-2">
+                <input
+                  type="text"
+                  className="p-2 w-full rounded-lg dark:bg-gray-800 dark:text-white"
+                  placeholder="Filter tags..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              {filteredTags.length > 0 ? (
+                filteredTags.map((tag) => {
+                  const isActive = tag.id === tempTagId;
                   return (
-                    <div key={tag.id} className="flex items-center p-2 ">
-                      <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                    <div key={tag.id} className="flex items-center p-2">
+                      <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                          isActive
+                            ? "bg-blue-100 text-blue-600 ring-blue-500/10"
+                            : "bg-gray-50 text-gray-600 ring-gray-500/10"
+                        }`}
+                        onClick={() => {
+                          setTempTagId(tag.id);
+                          setSelectedTagId(tag.id); // Set the selected tag ID
+                        }}
+                      >
                         {tag.name}{" "}
                         <IoCloseCircleOutline
                           size={18}
                           className="ms-2 cursor-pointer"
-                          onClick={() => {
-                            handleRemoveTag(tag.id);
-                          }}
+                          onClick={() => handleRemoveTag(tag.id)}
                         />
                       </span>
                     </div>
                   );
-                })}
+                })
+              ) : (
+                <p className="p-2 text-gray-500 dark:text-gray-400">
+                  No tags found
+                </p>
+              )}
             </li>
           </ul>
         </div>
       </aside>
 
-      <div className="p-4 sm:ml-64 mt-12">
-        <div className="grid grid-flow-col auto-cols-max">
-          <div className="p-3">Add Image</div>
-        
-        </div>
+      <div className="p-8 sm:ml-64 mt-12">
+        {tags.length > 0 && tempTagId && (
+          <>
+            <div className="flex items-center mb-4 p-4">
+              <FaPlus className="mt-1 me-1" />
+              <label className="cursor-pointer">
+                Add Image
+                <input
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => handleFileSelect(e, tempTagId)}
+                />
+              </label>
+              {tags.find((tag) => tag.id === tempTagId)?.images.length > 0 && (
+                <>
+                  <label
+                    className="cursor-pointer flex items-center ms-4"
+                    onClick={handleSelectAllImages}
+                  >
+                    <FaCheck size={24} />
+                    <span className="ml-2">Select All</span>
+                  </label>
+                  {selectedImages.length > 0 && (
+                    <label
+                      className="cursor-pointer flex items-center ms-4"
+                      onClick={handleDeleteSelectedImages}
+                    >
+                      <MdDelete size={24} />
+                      <span className="ml-2">Delete</span>
+                    </label>
+                  )}
+                </>
+              )}
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              {tags
+                .find((tag) => tag.id === tempTagId)
+                ?.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`relative ${
+                      selectedImages.includes(index)
+                        ? "border-2 border-red-500"
+                        : ""
+                    }`}
+                    onClick={() => handleImageSelect(index)}
+                  >
+                    <img
+                      src={image}
+                      alt={`tag-${index}`}
+                      className="w-full h-32 object-cover rounded-md"
+                    />
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
