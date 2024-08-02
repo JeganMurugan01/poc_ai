@@ -3,9 +3,12 @@ import { useState } from "react";
 import { FaCheck, FaPlus } from "react-icons/fa6";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const SideBarHeader = ({
   tags,
+  tagImages,
   newTagName,
   setNewTagName,
   addTag,
@@ -19,22 +22,51 @@ const SideBarHeader = ({
   const [selectedImages, setSelectedImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleAddTag = () => {
-    if (newTagName.trim() !== "") {
-      addTag(newTagName);
-      setNewTagName("");
-      setIsAddingTag(false);
+  const handleAddTag = async() => {
+    // if (newTagName.trim() !== "") {
+    //   addTag(newTagName);
+    //   setNewTagName("");
+    //   setIsAddingTag(false);
+    // }
+
+    if(!newTagName){
+      alert('please enter a tag name')
+      return;
     }
+
+    const projectId =  import.meta.env.VITE_PROJECT_ID;
+    const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT
+    const trainingKey = import.meta.env.VITE_TRAINING_KEY
+    let results = await fetch(`${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/tags?name=${newTagName}`,
+    {
+      method: "POST",
+      headers: {"Content-type": "application/json;charset=UTF-8","Training-key":trainingKey}
+    }
+    );
+
+    results =  await results.json();
+    console.log(results);
+    addTag(newTagName);
+    setNewTagName("");
+    setIsAddingTag(false);
   };
 
   const handleImageSelect = (index) => {
-    setSelectedImages((prevSelected) => {
+    // setSelectedImages((prevSelected) => {
+    //   if (prevSelected.includes(index)) {
+    //     return prevSelected.filter((i) => i !== index);
+    //   } else {
+    //     return [...prevSelected, index];
+    //   }
+    // });
+ setSelectedImages((prevSelected) => {
       if (prevSelected.includes(index)) {
         return prevSelected.filter((i) => i !== index);
       } else {
         return [...prevSelected, index];
       }
     });
+    console.log(selectedImages);
   };
 
   const handleDeleteSelectedImages = () => {
@@ -44,16 +76,13 @@ const SideBarHeader = ({
 
   const handleSelectAllImages = () => {
     const allImageIndices =
-      tags
-        .find((tag) => tag.id === tempTagId)
-        ?.images.map((_, index) => index) || [];
+    tagImages.map((_, index) => index) || [];
     setSelectedImages(allImageIndices);
   };
 
   const filteredTags = tags.filter((tag) =>
     tag.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -106,7 +135,7 @@ const SideBarHeader = ({
               <p className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white">
                 <span className="me-12">Tags</span>
                 <FaPlus
-                  className="ms-28 mt-2 cursor-pointer"
+                  className="ms-28 mt-2 cursor-pointer text-green-600"
                   onClick={() => setIsAddingTag(true)}
                 />
               </p>
@@ -115,18 +144,18 @@ const SideBarHeader = ({
                   <input
                     type="text"
                     className="p-2 w-full rounded-lg dark:bg-gray-800 dark:text-white"
-                    placeholder="Enter tag name"
+                    placeholder="Enter Tag Name"
                     value={newTagName}
                     onChange={(e) => setNewTagName(e.target.value)}
                   />
                   <button
-                    className="p-2 ml-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    className="p-2 ml-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600"
                     onClick={handleAddTag}
                   >
                     Add
                   </button>
                   <button
-                    className="p-2 ml-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    className="p-2 ml-2 bg-red-500 text-white  text-sm rounded-lg hover:bg-red-600"
                     onClick={() => setIsAddingTag(false)}
                   >
                     Cancel
@@ -148,7 +177,7 @@ const SideBarHeader = ({
                   return (
                     <div key={tag.id} className="flex items-center p-2">
                       <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-md font-medium ring-1 ring-inset cursor-pointer ${
                           isActive
                             ? "bg-blue-100 text-blue-600 ring-blue-500/10"
                             : "bg-gray-50 text-gray-600 ring-gray-500/10"
@@ -160,6 +189,7 @@ const SideBarHeader = ({
                       >
                         {tag.name}{" "}
                         <IoCloseCircleOutline
+                        color="red"
                           size={18}
                           className="ms-2 cursor-pointer"
                           onClick={() => handleRemoveTag(tag.id)}
@@ -179,20 +209,28 @@ const SideBarHeader = ({
       </aside>
 
       <div className="p-8 sm:ml-64 mt-12">
-        {tags.length > 0 && tempTagId && (
+        { (
           <>
             <div className="flex items-center mb-4 p-4">
-              <FaPlus className="mt-1 me-1" />
-              <label className="cursor-pointer">
-                Add Image
-                <input
-                  type="file"
-                  multiple
-                  className="hidden"
-                  onChange={(e) => handleFileSelect(e, tempTagId)}
-                />
-              </label>
-              {tags.find((tag) => tag.id === tempTagId)?.images.length > 0 && (
+             
+              {
+                tempTagId && (
+                  <>
+                  <FaPlus className="mt-1 me-1" />
+                  <label className="cursor-pointer">
+                  Add Image
+                  <input
+                    type="file"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => handleFileSelect(e, tempTagId)}
+                  />
+                </label>
+                  </>
+                )
+              }
+
+              {tagImages.length > 0 && (
                 <>
                   <label
                     className="cursor-pointer flex items-center ms-4"
@@ -201,7 +239,7 @@ const SideBarHeader = ({
                     <FaCheck size={24} />
                     <span className="ml-2">Select All</span>
                   </label>
-                  {selectedImages.length > 0 && (
+                  {tagImages.length > 0 && (
                     <label
                       className="cursor-pointer flex items-center ms-4"
                       onClick={handleDeleteSelectedImages}
@@ -214,22 +252,25 @@ const SideBarHeader = ({
               )}
             </div>
             <div className="grid grid-cols-3 gap-4">
-              {tags
-                .find((tag) => tag.id === tempTagId)
-                ?.images.map((image, index) => (
+              {tagImages.map((image, index) => (
                   <div
                     key={index}
                     className={`relative ${
-                      selectedImages.includes(index)
+                      selectedImages.includes(image.id)
                         ? "border-2 border-red-500"
                         : ""
                     }`}
-                    onClick={() => handleImageSelect(index)}
+                    onClick={() => handleImageSelect(image.id)}
                   >
-                    <img
-                      src={image}
+                    <LazyLoadImage
+                      src={image.thumbnailUri}
                       alt={`tag-${index}`}
                       className="w-full h-32 object-cover rounded-md"
+                      effect="blur"
+                      wrapperProps={{
+                          // If you need to, you can tweak the effect transition using the wrapper style.
+                          style: {transitionDelay: "0.1s"},
+                      }}
                     />
                   </div>
                 ))}
