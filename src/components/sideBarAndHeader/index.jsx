@@ -265,7 +265,7 @@ const SideBarHeader = ({
                     <LazyLoadImage
                       src={image.thumbnailUri}
                       alt={`tag-${index}`}
-                      className="w-full h-32 object-cover rounded-md"
+                      className="w-full h-60 object-cover rounded-md"
                       effect="blur"
                       wrapperProps={{
                           // If you need to, you can tweak the effect transition using the wrapper style.
