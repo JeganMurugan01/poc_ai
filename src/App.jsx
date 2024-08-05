@@ -7,7 +7,7 @@ function App() {
   const [tagImages, setTagImages] = useState([]);
   const [newTagName, setNewTagName] = useState("");
   const [selectedTagId, setSelectedTagId] = useState(null);
-
+  
   const projectId = import.meta.env.VITE_PROJECT_ID;
   const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT;
   const trainingKey = import.meta.env.VITE_TRAINING_KEY;
