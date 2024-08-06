@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import SideBarHeader from "./components/sideBarAndHeader";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [tags, setTags] = useState([]);
@@ -11,6 +13,37 @@ function App() {
   const projectId = import.meta.env.VITE_PROJECT_ID;
   const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT;
   const trainingKey = import.meta.env.VITE_TRAINING_KEY;
+
+  const handleTrainModule = async () =>{
+
+    if(window.confirm("Are you sure you want to train")){
+
+      try {
+       let results = await fetch(
+          `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/train`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Training-key": trainingKey,
+            },
+          }
+        );
+        if(results.status === 400 ){
+          console.log(results)
+          results = await results.json();
+          console.log(results)
+          toast.error(results.message)
+        }else{
+          results = await results.json();
+          toast.success('Training Started its take few minitues');
+          console.log(results);
+        }
+      } catch (error) {
+        console.error("Error uploading images:", error);
+      }
+    }
+  }
 
   const fetchTags = async () => {
     try {
@@ -110,7 +143,7 @@ function App() {
             },
           }
         );
-
+        toast.success('Tag removed successfully')
         setSelectedTagId(null);
         fetchTags();
         fetchTagImages();
@@ -138,6 +171,7 @@ function App() {
             },
           }
         );
+        toast.success('Image deleted successfully')
         fetchTagImages();
       } catch (error) {
         console.error("Error deleting images:", error);
@@ -158,7 +192,8 @@ function App() {
   }, [selectedTagId]);
 
   return (
-    <SideBarHeader
+<>
+<SideBarHeader
       tags={tags}
       tagImages={tagImages}
       newTagName={newTagName}
@@ -168,7 +203,10 @@ function App() {
       handleFileSelect={handleFileSelect}
       setSelectedTagId={setSelectedTagId}
       handleImageDelete={handleImageDelete}
+      handleTrainModule={handleTrainModule}
     />
+    <ToastContainer />
+</>
   );
 }
 

@@ -5,6 +5,7 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import { toast } from "react-toastify";
 
 const SideBarHeader = ({
   tags,
@@ -16,6 +17,8 @@ const SideBarHeader = ({
   handleFileSelect,
   setSelectedTagId,
   handleImageDelete,
+  handleTrainModule
+
 }) => {
   const [isAddingTag, setIsAddingTag] = useState(false);
   const [tempTagId, setTempTagId] = useState("");
@@ -46,6 +49,7 @@ const SideBarHeader = ({
 
     results =  await results.json();
     console.log(results);
+    toast.success('Tag Added Successfully')
     addTag(newTagName);
     setNewTagName("");
     setIsAddingTag(false);
@@ -115,7 +119,7 @@ const SideBarHeader = ({
             </div>
             <div className="flex items-center">
               <div className="flex items-center ms-3 text-white ">
-                <button className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+               <button onClick = { handleTrainModule} className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                   Train
                 </button>
               </div>
