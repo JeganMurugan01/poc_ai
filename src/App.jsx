@@ -1,16 +1,116 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import SideBarHeader from "./components/sideBarAndHeader";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [tags, setTags] = useState([]);
   const [tagImages, setTagImages] = useState([]);
   const [newTagName, setNewTagName] = useState("");
   const [selectedTagId, setSelectedTagId] = useState(null);
+  const [isTraining, setIsTraining] = useState(false);
   
   const projectId = import.meta.env.VITE_PROJECT_ID;
   const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT;
   const trainingKey = import.meta.env.VITE_TRAINING_KEY;
+  const predictionKey = import.meta.env.VITE_PREDICTION_RESOURCE_ID;
+
+  const publishTraining = async (iterationID,name) =>{
+    try {
+     let results = await fetch(
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/iterations/${iterationID}/publish?publishName=${name}&predictionId=${predictionKey}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Training-key": trainingKey,
+          },
+        }
+      );
+      if(results.status === 400 ){
+        results = await results.json();
+        toast.error(results.message)
+        return results;
+      }else{
+         results = await results.json();
+         toast.success('Training Published')
+
+      }
+    } catch (error) {
+      console.error("Error uploading images:", error);
+    }
+  
+}
+  
+  const trainingResults = async () =>{
+      try {
+       let results = await fetch(
+          `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/iterations`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Training-key": trainingKey,
+            },
+          }
+        );
+        if(results.status === 400 ){
+          results = await results.json();
+          toast.error(results.message)
+          return results;
+        }else{
+           results = await results.json();
+          const trainRes = results.filter((result)=> result.status === 'Training');
+          console.log(trainRes);
+                    if(trainRes.length > 0){
+                      setIsTraining(true);
+                    }else{
+                      setIsTraining(false);
+                      const latestRecord = results.sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified))[0];
+                      console.log('latestRecord', latestRecord);
+                      if(latestRecord.publishName === null){
+                      publishTraining(latestRecord.id,latestRecord.name);
+                      }
+                    }
+        }
+      } catch (error) {
+        console.error("Error uploading images:", error);
+      }
+    
+  }
+
+  const handleTrainModule = async () =>{
+
+    if(window.confirm("Are you sure you want to train")){
+
+      try {
+       let results = await fetch(
+          `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/train`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Training-key": trainingKey,
+            },
+          }
+        );
+        if(results.status === 400 ){
+          console.log(results)
+          results = await results.json();
+          console.log(results)
+          toast.error(results.message)
+        }else{
+          results = await results.json();
+          setIsTraining(true);
+          toast.success('Training Started its take few minitues to complete');
+          console.log(results);
+        }
+      } catch (error) {
+        console.error("Error uploading images:", error);
+      }
+    }
+  }
 
   const fetchTags = async () => {
     try {
@@ -110,7 +210,7 @@ function App() {
             },
           }
         );
-
+        toast.success('Tag removed successfully')
         setSelectedTagId(null);
         fetchTags();
         fetchTagImages();
@@ -138,6 +238,7 @@ function App() {
             },
           }
         );
+        toast.success('Image deleted successfully')
         fetchTagImages();
       } catch (error) {
         console.error("Error deleting images:", error);
@@ -151,14 +252,28 @@ function App() {
 
   useEffect(() => {
     fetchTags();
-  }, []);
+  }, []); 
+  
+  useEffect(() => {
+    console.log("1",isTraining);
+    trainingResults();
+    const intervalId = setInterval(() => {
+      if (isTraining) {
+      trainingResults();
+      console.log("2",isTraining);
+      }
+    }, 10000);
+    console.log("3",isTraining);
+    return () => clearInterval(intervalId);
+  }, [isTraining]);
 
   useEffect(() => {
     fetchTagImages();
   }, [selectedTagId]);
 
   return (
-    <SideBarHeader
+<>
+<SideBarHeader
       tags={tags}
       tagImages={tagImages}
       newTagName={newTagName}
@@ -168,7 +283,11 @@ function App() {
       handleFileSelect={handleFileSelect}
       setSelectedTagId={setSelectedTagId}
       handleImageDelete={handleImageDelete}
+      handleTrainModule={handleTrainModule}
+      isTraining={isTraining}
     />
+    <ToastContainer />
+</>
   );
 }
 
