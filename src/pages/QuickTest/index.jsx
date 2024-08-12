@@ -10,23 +10,27 @@ export const QuickTest = () => {
   const handleSubmit = () => {
     const source = imageUrl || selectedFile?.name;
     if (source) {
-      console.log(`Processing image from ${imageUrl ? "URL" : "local file"}: ${source}`);
+      console.log(
+        `Processing image from ${imageUrl ? "URL" : "local file"}: ${source}`
+      );
     }
   };
-
   return (
-    <div className="h-screen grid grid-cols-12 gap-4 p-6">
-      <div className="col-span-8 p-5 flex items-center justify-center">
-        <div className="border-2 border-gray-300 w-full h-full flex items-center justify-center">
-          {imageUrl || selectedFile ? (
-            <img
-              src={imageUrl || URL.createObjectURL(selectedFile)}
-              alt="Test"
-              className="object-cover w-full h-full"
-            />
-          ) : (
-            <p className="text-gray-500">Test image will show up here</p>
-          )}
+    <div className="h-screen grid grid-cols-12 gap-4">
+      <div className="col-span-8 p-5 ">
+        <div className="flex justify-center items-center">
+          {" "}
+          <div className="border-2 border-gray-300 w-[70%] h-[60%] flex justify-center items-center">
+            {imageUrl || selectedFile ? (
+              <img
+                src={imageUrl || URL.createObjectURL(selectedFile)}
+                alt="Test"
+                className="object-contain w-full h-full"
+              />
+            ) : (
+              <p className="text-gray-500">Test image will show up here</p>
+            )}
+          </div>
         </div>
       </div>
 

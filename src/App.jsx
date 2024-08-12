@@ -1,24 +1,22 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import "./App.css";
 import SideBarHeader from "./components/sideBarAndHeader";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function App() {
+function App({ tagImages, setTagImages }) {
   const [tags, setTags] = useState([]);
-  const [tagImages, setTagImages] = useState([]);
-  const [newTagName, setNewTagName] = useState("");
   const [selectedTagId, setSelectedTagId] = useState(null);
   const [isTraining, setIsTraining] = useState(false);
-  
   const projectId = import.meta.env.VITE_PROJECT_ID;
   const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT;
   const trainingKey = import.meta.env.VITE_TRAINING_KEY;
   const predictionKey = import.meta.env.VITE_PREDICTION_RESOURCE_ID;
 
-  const publishTraining = async (iterationID,name) =>{
+  const publishTraining = async (iterationID, name) => {
     try {
-     let results = await fetch(
+      const response = await fetch(
         `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/iterations/${iterationID}/publish?publishName=${name}&predictionId=${predictionKey}`,
         {
           method: "POST",
@@ -28,64 +26,55 @@ function App() {
           },
         }
       );
-      if(results.status === 400 ){
-        results = await results.json();
-        toast.error(results.message)
-        return results;
-      }else{
-         results = await results.json();
-         toast.success('Training Published')
+      const result = await response.json();
+      if (response.status === 400) {
+        toast.error(result.message);
+        return result;
+      }
+      toast.success("Training Published");
+      return result;
+    } catch (error) {
+      console.error("Error publishing training:", error);
+    }
+  };
 
+  const trainingResults = async () => {
+    try {
+      const response = await fetch(
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/iterations`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Training-key": trainingKey,
+          },
+        }
+      );
+      const result = await response.json();
+      if (response.status === 400) {
+        toast.error(result.message);
+        return result;
+      }
+      const trainRes = result.filter((r) => r.status === "Training");
+      setIsTraining(trainRes.length > 0);
+
+      if (trainRes.length === 0) {
+        const latestRecord = result.sort(
+          (a, b) => new Date(b.lastModified) - new Date(a.lastModified)
+        )[0];
+        if (!latestRecord.publishName) {
+          publishTraining(latestRecord.id, latestRecord.name);
+        }
       }
     } catch (error) {
-      console.error("Error uploading images:", error);
+      console.error("Error fetching training results:", error);
     }
-  
-}
-  
-  const trainingResults = async () =>{
+  };
+
+  const handleTrainModule = async () => {
+    if (window.confirm("Are you sure you want to train?")) {
       try {
-       let results = await fetch(
-          `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/iterations`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Training-key": trainingKey,
-            },
-          }
-        );
-        if(results.status === 400 ){
-          results = await results.json();
-          toast.error(results.message)
-          return results;
-        }else{
-           results = await results.json();
-          const trainRes = results.filter((result)=> result.status === 'Training');
-          console.log(trainRes);
-                    if(trainRes.length > 0){
-                      setIsTraining(true);
-                    }else{
-                      setIsTraining(false);
-                      const latestRecord = results.sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified))[0];
-                      console.log('latestRecord', latestRecord);
-                      if(latestRecord.publishName === null){
-                      publishTraining(latestRecord.id,latestRecord.name);
-                      }
-                    }
-        }
-      } catch (error) {
-        console.error("Error uploading images:", error);
-      }
-    
-  }
-
-  const handleTrainModule = async () =>{
-
-    if(window.confirm("Are you sure you want to train")){
-
-      try {
-       let results = await fetch(
+        const response = await fetch(
           `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/train`,
           {
             method: "POST",
@@ -95,22 +84,20 @@ function App() {
             },
           }
         );
-        if(results.status === 400 ){
-          console.log(results)
-          results = await results.json();
-          console.log(results)
-          toast.error(results.message)
-        }else{
-          results = await results.json();
+        const result = await response.json();
+        if (response.status === 400) {
+          toast.error(result.message);
+        } else {
           setIsTraining(true);
-          toast.success('Training Started its take few minitues to complete');
-          console.log(results);
+          toast.success(
+            "Training Started. It will take a few minutes to complete."
+          );
         }
       } catch (error) {
-        console.error("Error uploading images:", error);
+        console.error("Error starting training:", error);
       }
     }
-  }
+  };
 
   const fetchTags = async () => {
     try {
@@ -119,7 +106,7 @@ function App() {
         {
           method: "GET",
           headers: {
-            "Content-type": "application/json;charset=UTF-8",
+            "Content-Type": "application/json;charset=UTF-8",
             "Training-key": trainingKey,
           },
         }
@@ -128,30 +115,6 @@ function App() {
       setTags(result);
     } catch (error) {
       console.error("Error fetching tags:", error);
-    }
-  };
-
-  const fetchTagImages = async () => {
-    try {
-      const response = await fetch(
-        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/images`,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            "Training-key": trainingKey,
-          },
-        }
-      );
-      let results = await response.json();
-      if (selectedTagId) {
-        results = results.filter(
-          (item) => item.tags[0]?.tagId === selectedTagId
-        );
-      }
-      setTagImages(results);
-    } catch (error) {
-      console.error("Error fetching tag images:", error);
     }
   };
 
@@ -190,7 +153,7 @@ function App() {
           {
             method: "DELETE",
             headers: {
-              "Content-type": "application/json;charset=UTF-8",
+              "Content-Type": "application/json;charset=UTF-8",
               "Training-key": trainingKey,
             },
           }
@@ -205,12 +168,13 @@ function App() {
           {
             method: "DELETE",
             headers: {
-              "Content-type": "application/json",
+              "Content-Type": "application/json",
               "Training-key": trainingKey,
             },
           }
         );
-        toast.success('Tag removed successfully')
+
+        toast.success("Tag removed successfully");
         setSelectedTagId(null);
         fetchTags();
         fetchTagImages();
@@ -233,37 +197,53 @@ function App() {
           {
             method: "DELETE",
             headers: {
-              "Content-type": "application/json",
+              "Content-Type": "application/json",
               "Training-key": trainingKey,
             },
           }
         );
-        toast.success('Image deleted successfully')
+        toast.success("Image deleted successfully");
         fetchTagImages();
       } catch (error) {
         console.error("Error deleting images:", error);
       }
     }
   };
-
   const addTag = () => {
     fetchTags();
+  };
+  const fetchTagImages = async () => {
+    try {
+      const response = await fetch(
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/images`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            "Training-key": trainingKey,
+          },
+        }
+      );
+      let result = await response.json();
+      if (selectedTagId) {
+        result = result.filter((item) => item.tags[0]?.tagId === selectedTagId);
+      }
+      setTagImages(result);
+    } catch (error) {
+      console.error("Error fetching tag images:", error);
+    }
   };
 
   useEffect(() => {
     fetchTags();
-  }, []); 
-  
+  }, []);
+
   useEffect(() => {
-    console.log("1",isTraining);
     trainingResults();
     const intervalId = setInterval(() => {
-      if (isTraining) {
-      trainingResults();
-      console.log("2",isTraining);
-      }
+      if (isTraining) trainingResults();
     }, 10000);
-    console.log("3",isTraining);
+
     return () => clearInterval(intervalId);
   }, [isTraining]);
 
@@ -272,22 +252,20 @@ function App() {
   }, [selectedTagId]);
 
   return (
-<>
-<SideBarHeader
-      tags={tags}
-      tagImages={tagImages}
-      newTagName={newTagName}
-      setNewTagName={setNewTagName}
-      addTag={addTag}
-      handleRemoveTag={handleRemoveTag}
-      handleFileSelect={handleFileSelect}
-      setSelectedTagId={setSelectedTagId}
-      handleImageDelete={handleImageDelete}
-      handleTrainModule={handleTrainModule}
-      isTraining={isTraining}
-    />
-    <ToastContainer />
-</>
+    <div>
+      <SideBarHeader
+        tags={tags}
+        tagImages={tagImages}
+        addTag={addTag}
+        handleRemoveTag={handleRemoveTag}
+        handleFileSelect={handleFileSelect}
+        setSelectedTagId={setSelectedTagId}
+        handleImageDelete={handleImageDelete}
+        handleTrainModule={handleTrainModule}
+        isTraining={isTraining}
+      />
+      <ToastContainer />
+    </div>
   );
 }
 
