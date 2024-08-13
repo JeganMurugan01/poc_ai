@@ -97,7 +97,7 @@ const SideBarHeader = ({
     );
   return (
     <>
-      <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+      <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 bg-gray-800 border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
@@ -106,7 +106,7 @@ const SideBarHeader = ({
                 data-drawer-toggle="logo-sidebar"
                 aria-controls="logo-sidebar"
                 type="button"
-                className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
               >
                 <span className="sr-only">Open sidebar</span>
                 <svg
@@ -124,7 +124,7 @@ const SideBarHeader = ({
                   onClick={() => {
                     nav("/");
                   }}
-                  className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white cursor-pointer"
+                  className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white cursor-pointer"
                 >
                   AI poc
                 </span>
@@ -132,12 +132,12 @@ const SideBarHeader = ({
             </div>
             <div className="flex items-center">
               <div className="flex items-center ms-3 text-white ">
-               <button onClick = { handleTrainModule} disabled = {isTraining} className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+               <button onClick = { handleTrainModule} disabled = {isTraining} className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700">
                  {  isTraining === false ? 'Train' : 'Training in progress .....' }
                 </button>
                 <button
                   onClick={() => nav("/quickTest")}
-                  className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                  className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
                 >
                   Quick Test
                 </button>
@@ -149,13 +149,13 @@ const SideBarHeader = ({
 
       <aside
         id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 bg-gray-800 border-gray-700"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div className="h-full px-3 pb-4 overflow-y-auto bg-white bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <p className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white">
+              <p className="flex items-center p-2 text-gray-900 rounded-lg text-white">
                 <span className="me-12">Tags</span>
                 <FaPlus
                   className="ms-28 mt-2 cursor-pointer text-green-600"
@@ -163,10 +163,10 @@ const SideBarHeader = ({
                 />
               </p>
               {isAddingTag && (
-                <div className="flex items-center p-2 mt-2 border rounded-lg bg-gray-100 dark:bg-gray-700">
+                <div className="flex items-center p-2 mt-2 border rounded-lg bg-gray-100 bg-gray-700">
                   <input
                     type="text"
-                    className="p-2 w-full rounded-lg dark:bg-gray-800 dark:text-white"
+                    className="p-2 w-full rounded-lg bg-gray-800 text-white"
                     placeholder="Enter Tag Name"
                     value={newTagName}
                     onChange={(e) => setNewTagName(e.target.value)}
@@ -188,7 +188,7 @@ const SideBarHeader = ({
               <div className="p-2 mt-2">
                 <input
                   type="text"
-                  className="p-2 w-full rounded-lg dark:bg-gray-800 dark:text-white"
+                  className="p-2 w-full rounded-lg bg-gray-800 text-white"
                   placeholder="Filter tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -222,7 +222,7 @@ const SideBarHeader = ({
                   );
                 })
               ) : (
-                <p className="p-2 text-gray-500 dark:text-gray-400">
+                <p className="p-2 text-gray-500 text-gray-400">
                   No tags found
                 </p>
               )}
