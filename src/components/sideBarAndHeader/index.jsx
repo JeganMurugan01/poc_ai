@@ -24,15 +24,13 @@ const SideBarHeader = ({
   isTraining,
   Page,
 }) => {
-  console.log(Page,"DF");
+
   const nav = useNavigate();
   const [isAddingTag, setIsAddingTag] = useState(false);
   const [tempTagId, setTempTagId] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
-  console.log(location.pathname);
-
   const handleAddTag = async () => {
     // if (newTagName.trim() !== "") {
     //   addTag(newTagName);

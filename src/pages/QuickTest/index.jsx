@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Descriptions} from "../../utils/constant";
 
 export const QuickTest = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [testResult, setTestResult] = useState([]);
+  const [description, setDescription] = useState("");
 
   const handleFileChange = async (e) => {
     setSelectedFile(e.target.files[0]);
@@ -23,14 +25,22 @@ export const QuickTest = () => {
           body: formData,
         }
       );
-
+    
       results = await results.json();
-      console.log(results);
-      setTestResult(results.predictions);
+      const predictions = results.predictions;
+      const highestProbabilityIndex = predictions.reduce((maxIndex, current, index, array) => {
+        return current.probability > array[maxIndex].probability ? index : maxIndex;
+      }, 0);
+  
+      const data= predictions[highestProbabilityIndex] 
+      setDescription(Descriptions[data.tagName] || "No description available");
+      setTestResult(predictions);
       console.log(testResult);
+    
     } catch (error) {
-      console.error("Error uploading images:", error);
+      console.error('Error:', error);
     }
+    
   };
 
   return (
@@ -74,6 +84,9 @@ export const QuickTest = () => {
             {result.tagName} - {(result.probability * 100).toFixed(2)}%
           </p>
         ))}
+        <p className="text-white">
+          {description}
+        </p>
       </div>
     </div>
   );
