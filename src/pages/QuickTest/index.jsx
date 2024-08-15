@@ -15,7 +15,7 @@ export const QuickTest = () => {
   };
 
   return (
-    <div className="h-screen grid grid-cols-12 gap-4 p-6">
+    <div className="h-screen grid grid-cols-12 gap-4 p-6 ">
       <div className="col-span-8 p-5 flex items-center justify-center">
         <div className="border-2 border-gray-300 w-full h-full flex items-center justify-center">
           {imageUrl || selectedFile ? (
