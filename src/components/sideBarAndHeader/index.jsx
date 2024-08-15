@@ -3,8 +3,8 @@ import { useState } from "react";
 import { FaCheck, FaPlus } from "react-icons/fa6";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -56,7 +56,7 @@ const SideBarHeader = ({
 
     results = await results.json();
     console.log(results);
-    toast.success('Tag Added Successfully')
+    toast.success("Tag Added Successfully");
     addTag(newTagName);
     setNewTagName("");
     setIsAddingTag(false);
@@ -132,12 +132,18 @@ const SideBarHeader = ({
             </div>
             <div className="flex items-center">
               <div className="flex items-center ms-3 text-white ">
-               <button onClick = { handleTrainModule} disabled = {isTraining} className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700">
-                 {  isTraining === false ? 'Train' : 'Training in progress .....' }
+                <button
+                  onClick={handleTrainModule}
+                  disabled={isTraining}
+                  className="text-gray-900  border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
+                >
+                  {isTraining === false
+                    ? "Train"
+                    : "Training in progress ....."}
                 </button>
                 <button
                   onClick={() => nav("/quickTest")}
-                  className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
+                  className="text-gray-900  border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
                 >
                   Quick Test
                 </button>
@@ -149,10 +155,10 @@ const SideBarHeader = ({
 
       <aside
         id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 bg-gray-800 border-gray-700"
+        className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full  border-r border-gray-200 sm:translate-x-0 bg-gray-800 border-gray-700"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-white bg-gray-800">
+        <div className="h-full px-3 pb-4 overflow-y-auto  bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
               <p className="flex items-center p-2 text-gray-900 rounded-lg text-white">
@@ -222,9 +228,7 @@ const SideBarHeader = ({
                   );
                 })
               ) : (
-                <p className="p-2 text-gray-500 text-gray-400">
-                  No tags found
-                </p>
+                <p className="p-2 text-gray-500 text-gray-400">No tags found</p>
               )}
             </li>
           </ul>
