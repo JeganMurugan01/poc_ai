@@ -2,8 +2,36 @@ import { useState } from "react";
 
 export const QuickTest = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [testResult, setTestResult] = useState([]);
 
-  const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
+  const handleFileChange = async (e) => {
+    setSelectedFile(e.target.files[0]);
+    const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT;
+    const trainingKey = import.meta.env.VITE_TRAINING_KEY;
+    const projectId = import.meta.env.VITE_PROJECT_ID;
+    const formData = new FormData();
+    formData.append("imageData", e.target.files[0]);
+
+    try {
+      let results = await fetch(
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=0a024543-46cd-4f19-b8ff-aa2915a9d982`,
+        {
+          method: "POST",
+          headers: {
+            "Training-key": trainingKey,
+          },
+          body: formData,
+        }
+      );
+
+      results = await results.json();
+      console.log(results);
+      setTestResult(results.predictions);
+      console.log(testResult);
+    } catch (error) {
+      console.error("Error uploading images:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-12 gap-4 p-6">
@@ -41,6 +69,11 @@ export const QuickTest = () => {
         <p className="text-sm text-gray-500 mb-4">
           File size should not exceed: 4mb
         </p>
+        {testResult.map((result) => (
+          <p className="text-white" key={result.id}>
+            {result.tagName} - {(result.probability * 100).toFixed(2)}%
+          </p>
+        ))}
       </div>
     </div>
   );
