@@ -2,13 +2,12 @@ import { useRoutes } from "react-router-dom";
 import App from "../App";
 import SideBarHeader from "../components/sideBarAndHeader";
 import { QuickTest } from "../pages/QuickTest";
-import EmptySideBarHeader from "../components/emptySideBarAndHeader.jsx";
 
 const Router = () => {
   let element = useRoutes([
     {
       path: "/",
-      element: <EmptySideBarHeader />,
+      element: <App />,
     },
     {
       path: "/Admin",

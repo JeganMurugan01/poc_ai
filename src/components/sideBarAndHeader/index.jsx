@@ -7,6 +7,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom'
 
 const SideBarHeader = ({
   tags,
@@ -27,6 +28,8 @@ const SideBarHeader = ({
   const [tempTagId, setTempTagId] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();
+  console.log(location.pathname);
 
   const handleAddTag = async () => {
     // if (newTagName.trim() !== "") {
@@ -132,28 +135,30 @@ const SideBarHeader = ({
             </div>
             <div className="flex items-center">
               <div className="flex items-center ms-3 text-white ">
-                <button
-                  onClick={() => nav("/")}
-                  className="text-gray-900  borde border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
-                >
-                  Dashboard
-                </button>
-
-                <button
-                  onClick={handleTrainModule}
-                  disabled={isTraining}
-                  className="text-gray-900  border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
-                >
-                  {isTraining === false
-                    ? "Train"
-                    : "Training in progress ....."}
-                </button>
-                <button
-                  onClick={() => nav("/quickTest")}
-                  className="text-gray-900  border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
-                >
-                  Quick Test
-                </button>
+                {location.pathname === '/Admin' ? (
+                 <div>
+                   <button
+                    onClick={() => nav("/")}
+                    className="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
+                  >
+                    Dashboard
+                  </button>
+                   <button onClick={handleTrainModule} disabled={isTraining} className="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700">
+                   {isTraining === false ? 'Train' : 'Training in progress .....'}
+                 </button>
+                 <button
+                   onClick={() => nav("/quickTest")}
+                   className="text-gray-900  border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
+                 >
+                   Quick Test
+                 </button>
+                  </div>
+                ) : <button
+                onClick={() => nav("/Admin")}
+                className="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
+              >
+                Admin
+              </button>}
               </div>
             </div>
           </div>
@@ -165,7 +170,7 @@ const SideBarHeader = ({
         className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full  border-r border-gray-200 sm:translate-x-0 bg-gray-800 border-gray-700"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto  bg-gray-800">
+        {location.pathname === '/' ? (<div className="h-full px-3 pb-4 overflow-y-auto  bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
               <p className="flex items-center p-2 text-gray-900 rounded-lg text-white">
@@ -213,11 +218,10 @@ const SideBarHeader = ({
                   return (
                     <div key={tag.id} className="flex items-center p-2">
                       <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-md font-medium ring-1 ring-inset cursor-pointer ${
-                          isActive
-                            ? "bg-blue-100 text-blue-600 ring-blue-500/10"
-                            : "bg-gray-50 text-gray-600 ring-gray-500/10"
-                        }`}
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-md font-medium ring-1 ring-inset cursor-pointer ${isActive
+                          ? "bg-blue-100 text-blue-600 ring-blue-500/10"
+                          : "bg-gray-50 text-gray-600 ring-gray-500/10"
+                          }`}
                         onClick={() => {
                           setTempTagId(tag.id);
                           setSelectedTagId(tag.id); // Set the selected tag ID
@@ -239,11 +243,12 @@ const SideBarHeader = ({
               )}
             </li>
           </ul>
-        </div>
+        </div>):null}
       </aside>
 
       <div className="p-8 sm:ml-64 mt-12 bg-gray-700">
-        {!Page ? (
+      {location.pathname === '/' ? (
+        !Page ? (
           <>
             <div className="flex items-center mb-4 p-4">
               {tempTagId && (
@@ -270,15 +275,13 @@ const SideBarHeader = ({
                     <FaCheck className="text-white" size={24} />
                     <span className="ml-2 text-white">Select All</span>
                   </label>
-                  {tagImages.length > 0 && (
-                    <label
-                      className="cursor-pointer flex items-center ms-4"
-                      onClick={handleDeleteSelectedImages}
-                    >
-                      <MdDelete className="text-white" size={24} />
-                      <span className="ml-2 text-white">Delete</span>
-                    </label>
-                  )}
+                  <label
+                    className="cursor-pointer flex items-center ms-4"
+                    onClick={handleDeleteSelectedImages}
+                  >
+                    <MdDelete className="text-white" size={24} />
+                    <span className="ml-2 text-white">Delete</span>
+                  </label>
                 </>
               )}
             </div>
@@ -287,11 +290,10 @@ const SideBarHeader = ({
                 tagImages.map((image, index) => (
                   <div
                     key={index}
-                    className={`relative ${
-                      selectedImages.includes(image.id)
-                        ? "border-2 border-red-500"
-                        : ""
-                    }`}
+                    className={`relative ${selectedImages.includes(image.id)
+                      ? "border-2 border-red-500"
+                      : ""
+                      }`}
                     onClick={() => handleImageSelect(image.id)}
                   >
                     <LazyLoadImage
@@ -310,7 +312,8 @@ const SideBarHeader = ({
           </>
         ) : (
           <Page />
-        )}
+        )
+      ) : null}
       </div>
     </>
   );
