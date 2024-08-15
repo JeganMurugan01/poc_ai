@@ -235,7 +235,7 @@ const SideBarHeader = ({
         </div>
       </aside>
 
-      <div className="p-8 sm:ml-64 mt-12">
+      <div className="p-8 sm:ml-64 mt-12 bg-gray-700">
         {!Page ? (
           <>
             <div className="flex items-center mb-4 p-4">
@@ -260,16 +260,16 @@ const SideBarHeader = ({
                     className="cursor-pointer flex items-center ms-4"
                     onClick={handleSelectAllImages}
                   >
-                    <FaCheck size={24} />
-                    <span className="ml-2">Select All</span>
+                    <FaCheck  className="text-white"size={24} />
+                    <span className="ml-2 text-white">Select All</span>
                   </label>
                   {tagImages.length > 0 && (
                     <label
                       className="cursor-pointer flex items-center ms-4"
                       onClick={handleDeleteSelectedImages}
                     >
-                      <MdDelete size={24} />
-                      <span className="ml-2">Delete</span>
+                      <MdDelete className="text-white" size={24} />
+                      <span className="ml-2 text-white">Delete</span>
                     </label>
                   )}
                 </>
