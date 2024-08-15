@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom'
 
+
 const SideBarHeader = ({
   tags,
   tagImages,
@@ -23,6 +24,7 @@ const SideBarHeader = ({
   isTraining,
   Page,
 }) => {
+  console.log(Page,"DF");
   const nav = useNavigate();
   const [isAddingTag, setIsAddingTag] = useState(false);
   const [tempTagId, setTempTagId] = useState("");
@@ -146,12 +148,6 @@ const SideBarHeader = ({
                    <button onClick={handleTrainModule} disabled={isTraining} className="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700">
                    {isTraining === false ? 'Train' : 'Training in progress .....'}
                  </button>
-                 <button
-                   onClick={() => nav("/quickTest")}
-                   className="text-gray-900  border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
-                 >
-                   Quick Test
-                 </button>
                   </div>
                 ) : <button
                 onClick={() => nav("/Admin")}
@@ -170,7 +166,7 @@ const SideBarHeader = ({
         className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full  border-r border-gray-200 sm:translate-x-0 bg-gray-800 border-gray-700"
         aria-label="Sidebar"
       >
-        {location.pathname === '/' ? (<div className="h-full px-3 pb-4 overflow-y-auto  bg-gray-800">
+        {location.pathname === '/Admin' ? (<div className="h-full px-3 pb-4 overflow-y-auto  bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
               <p className="flex items-center p-2 text-gray-900 rounded-lg text-white">
@@ -245,75 +241,72 @@ const SideBarHeader = ({
           </ul>
         </div>):null}
       </aside>
-{/* test */}
       <div className="p-8 sm:ml-64 mt-12 bg-gray-700">
-      {location.pathname === '/' ? (
-        !Page ? (
-          <>
-            <div className="flex items-center mb-4 p-4">
-              {tempTagId && (
-                <>
-                  <FaPlus className="mt-1 me-1" />
-                  <label className="cursor-pointer">
-                    Add Image
-                    <input
-                      type="file"
-                      multiple
-                      className="hidden"
-                      onChange={(e) => handleFileSelect(e, tempTagId)}
-                    />
-                  </label>
-                </>
-              )}
+      {location.pathname === "/Admin" && !Page ? (
+  <>
+    <div className="flex items-center mb-4 p-4">
+      {tempTagId && (
+        <>
+          <FaPlus className="mt-1 me-1" />
+          <label className="cursor-pointer">
+            Add Image
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              onChange={(e) => handleFileSelect(e, tempTagId)}
+            />
+          </label>
+        </>
+      )}
 
-              {Array.isArray(tagImages) && tagImages.length > 0 && (
-                <>
-                  <label
-                    className="cursor-pointer flex items-center ms-4"
-                    onClick={handleSelectAllImages}
-                  >
-                    <FaCheck className="text-white" size={24} />
-                    <span className="ml-2 text-white">Select All</span>
-                  </label>
-                  <label
-                    className="cursor-pointer flex items-center ms-4"
-                    onClick={handleDeleteSelectedImages}
-                  >
-                    <MdDelete className="text-white" size={24} />
-                    <span className="ml-2 text-white">Delete</span>
-                  </label>
-                </>
-              )}
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {tagImages &&
-                tagImages.map((image, index) => (
-                  <div
-                    key={index}
-                    className={`relative ${selectedImages.includes(image.id)
-                      ? "border-2 border-red-500"
-                      : ""
-                      }`}
-                    onClick={() => handleImageSelect(image.id)}
-                  >
-                    <LazyLoadImage
-                      src={image.thumbnailUri}
-                      alt={`tag-${index}`}
-                      className="w-full h-60 object-cover rounded-md"
-                      effect="blur"
-                      wrapperProps={{
-                        // If you need to, you can tweak the effect transition using the wrapper style.
-                        style: { transitionDelay: "0.1s" },
-                      }}
-                    />
-                  </div>
-                ))}
-            </div>
-          </>
-        ) : (
-          <Page />
-        )
-      ) : null}
+      {Array.isArray(tagImages) && tagImages.length > 0 && (
+        <>
+          <label
+            className="cursor-pointer flex items-center ms-4"
+            onClick={handleSelectAllImages}
+          >
+            <FaCheck className="text-white" size={24} />
+            <span className="ml-2 text-white">Select All</span>
+          </label>
+          <label
+            className="cursor-pointer flex items-center ms-4"
+            onClick={handleDeleteSelectedImages}
+          >
+            <MdDelete className="text-white" size={24} />
+            <span className="ml-2 text-white">Delete</span>
+          </label>
+        </>
+      )}
+    </div>
+    <div className="grid grid-cols-3 gap-4">
+      {tagImages &&
+        tagImages.map((image, index) => (
+          <div
+            key={index}
+            className={`relative ${selectedImages.includes(image.id)
+              ? "border-2 border-red-500"
+              : ""
+            }`}
+            onClick={() => handleImageSelect(image.id)}
+          >
+            <LazyLoadImage
+              src={image.thumbnailUri}
+              alt={`tag-${index}`}
+              className="w-full h-60 object-cover rounded-md"
+              effect="blur"
+              wrapperProps={{
+                style: { transitionDelay: "0.1s" },
+              }}
+            />
+          </div>
+        ))}
+    </div>
+  </>
+) : (
+  Page && <Page />
+)}
+
       </div>
     </>
   );

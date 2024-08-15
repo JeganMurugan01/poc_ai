@@ -7,15 +7,11 @@ const Router = () => {
   let element = useRoutes([
     {
       path: "/",
-      element: <App />,
+      element: <SideBarHeader Page={QuickTest} />,
     },
     {
       path: "/Admin",
       element: <App />,
-    },
-    {
-      path: "/quickTest",
-      element: <SideBarHeader Page={QuickTest} />,
     },
   ]);
 
