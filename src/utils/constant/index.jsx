@@ -12,6 +12,5 @@ export const Descriptions = {
     Jasmine : "Jasmine is used to write and run tests for JavaScript applications. It focuses on providing a clean and readable syntax for writing tests, allowing developers to describe the behavior of their code in a clear, expressive manner.",
     Chickenpox : "Chickenpox is caused by the varicella-zoster virus (VZV). It's highly contagious and spreads through direct contact with the rash, or through respiratory droplets from coughs or sneezes.",
     Measles: "Measles is caused by the measles virus, which is highly contagious and spreads through respiratory droplets from coughing and sneezing."
-
   };
   

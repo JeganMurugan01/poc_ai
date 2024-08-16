@@ -93,6 +93,7 @@ const SideBarHeader = ({
 
   const filteredTags =
     tags &&
+    tags.length &&
     tags.filter((tag) =>
       tag.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -289,7 +290,9 @@ const SideBarHeader = ({
               )}
             </div>
             <div className="grid grid-cols-3 gap-4  ">
-              {tagImages &&
+              {Array.isArray(tagImages) &&
+                tagImages &&
+                tagImages.length > 0 &&
                 tagImages.map((image, index) => (
                   <div
                     key={index}
