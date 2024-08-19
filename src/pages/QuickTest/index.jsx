@@ -15,7 +15,7 @@ export const QuickTest = () => {
     formData.append("imageData", e.target.files[0]);
     try {
       let results = await fetch(
-        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=0a024543-46cd-4f19-b8ff-aa2915a9d982`,
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=c57e55a7-a3ab-477b-9b56-924ce9efd217`,
         {
           method: "POST",
           headers: {
