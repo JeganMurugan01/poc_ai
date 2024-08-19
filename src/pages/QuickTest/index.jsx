@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Descriptions } from "../../utils/constant";
+import { PropagateLoader } from "react-spinners";
 
 export const QuickTest = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [testResult, setTestResult] = useState([]);
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = async (e) => {
     setSelectedFile(e.target.files[0]);
@@ -13,9 +15,12 @@ export const QuickTest = () => {
     const projectId = import.meta.env.VITE_PROJECT_ID;
     const formData = new FormData();
     formData.append("imageData", e.target.files[0]);
+
+    setLoading(true); // Set loading to true before API call
+
     try {
       let results = await fetch(
-        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=0a024543-46cd-4f19-b8ff-aa2915a9d982`,
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=c57e55a7-a3ab-477b-9b56-924ce9efd217`,
         {
           method: "POST",
           headers: {
@@ -37,15 +42,16 @@ export const QuickTest = () => {
       const data = predictions[highestProbabilityIndex];
       setDescription(Descriptions[data.tagName] || "No description available");
       setTestResult(predictions);
-      console.log(testResult);
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setLoading(false); // Set loading to false after API call
     }
   };
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-12 gap-4 p-6">
-      <div className="md:col-span-8 p-5 ">
+      <div className="md:col-span-8 p-5">
         <div className="border-2 border-gray-300 w-10/12 h-full md:h-3/6 flex items-center justify-center">
           {selectedFile ? (
             <img
@@ -55,6 +61,35 @@ export const QuickTest = () => {
             />
           ) : (
             <p className="text-gray-500">Test image will show up here</p>
+          )}
+        </div>
+        <div className="mt-5">
+          {loading ? (
+            <div className=" ms-28 mt-24">
+              <PropagateLoader color="#ffffff" />
+            </div>
+          ) : (
+            <>
+              {testResult.length > 0 && (
+                <>
+                  {testResult.map((result) => (
+                    <p className="text-white" key={result.id}>
+                      {result.tagName} - {(result.probability * 100).toFixed(2)}
+                      %
+                    </p>
+                  ))}
+                  <p className="text-white mt-3">
+                    <label className="font-extrabold text-sky-400">
+                      Description :{" "}
+                    </label>
+                    {description}
+                  </p>
+                </>
+              )}
+              {testResult.length === 0 && !loading && (
+                <p className="text-gray-500">No results available</p>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -74,24 +109,8 @@ export const QuickTest = () => {
           />
         </label>
         <p className="text-sm text-gray-500 mb-2 mt-5">
-          File formats accepted: jpg, png, bmp
+          File formats accepted: jpg, png.
         </p>
-        <p className="text-sm text-gray-500 mb-4">
-          File size should not exceed: 4mb
-        </p>
-        {testResult.map((result) => (
-          <p className="text-white" key={result.id}>
-            {result.tagName} - {(result.probability * 100).toFixed(2)}%
-          </p>
-        ))}
-        {testResult.length > 0 && (
-          <p className="text-white mt-3">
-            <label className="font-extrabold text-sky-400">
-              Description :{" "}
-            </label>
-            {description}
-          </p>
-        )}
       </div>
     </div>
   );

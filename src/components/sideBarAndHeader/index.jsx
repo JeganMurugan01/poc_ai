@@ -88,6 +88,7 @@ const SideBarHeader = ({
 
   const handleSelectAllImages = () => {
     const allImageIndices = tagImages.map((_, index) => index) || [];
+    console.log("Selecting all images:", allImageIndices);
     setSelectedImages(allImageIndices);
   };
 
@@ -257,8 +258,8 @@ const SideBarHeader = ({
             <div className="flex items-center mb-4 p-4 ">
               {tempTagId && (
                 <>
-                  <FaPlus className="mt-1 me-1" />
-                  <label className="cursor-pointer">
+                  <FaPlus className="mt-1 me-1 text-white" />
+                  <label className="cursor-pointer text-white">
                     Add Image
                     <input
                       type="file"
@@ -297,11 +298,11 @@ const SideBarHeader = ({
                   <div
                     key={index}
                     className={`relative ${
-                      selectedImages.includes(image.id)
+                      selectedImages.includes(index)
                         ? "border-2 border-red-500"
                         : ""
                     }`}
-                    onClick={() => handleImageSelect(image.id)}
+                    onClick={() => handleImageSelect(index)}
                   >
                     <LazyLoadImage
                       src={image.thumbnailUri}
