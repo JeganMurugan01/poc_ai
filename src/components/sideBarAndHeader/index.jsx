@@ -167,12 +167,11 @@ const SideBarHeader = ({
         </div>
       </nav>
 
-      <aside
+     {location.pathname === '/Admin' ? ( <aside
         id="logo-sidebar"
         className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full  border-r border-gray-200 sm:translate-x-0 bg-gray-800 border-gray-700"
         aria-label="Sidebar"
       >
-        {location.pathname === "/Admin" ? (
           <div className="h-full px-3 pb-4 overflow-y-auto  bg-gray-800">
             <ul className="space-y-2 font-medium">
               <li>
@@ -250,9 +249,10 @@ const SideBarHeader = ({
               </li>
             </ul>
           </div>
-        ) : null}
-      </aside>
-      <div className="p-8 sm:ml-64 mt-12 bg-gray-700  min-h-screen	">
+      </aside>): null}
+      <div className="p-8 ${
+    location.pathname !== '/' ? 'sm:ml-64' : ''
+  }` mt-12 bg-gray-700  min-h-screen	">
         {location.pathname === "/Admin" && !Page ? (
           <>
             <div className="flex items-center mb-4 p-4 ">

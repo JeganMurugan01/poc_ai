@@ -20,7 +20,7 @@ export const QuickTest = () => {
 
     try {
       let results = await fetch(
-        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=c57e55a7-a3ab-477b-9b56-924ce9efd217`,
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=f5599dca-7410-4958-a1b2-bcff89e6362f`,
         {
           method: "POST",
           headers: {
