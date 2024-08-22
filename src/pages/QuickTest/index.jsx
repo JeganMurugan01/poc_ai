@@ -8,6 +8,16 @@ export const QuickTest = () => {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const data = "Optional fdic Chaining buttonConfig?.length  Checks if buttonConfig is defined and has a length greater thancolorConfig?.length  Checks if colorConfig is defined and has a length greater than Buttons and color pickers are only rendered if their respective arrays are defined and not empty. The question-section displays a message based on whether there are any buttons or color pickers available.This approach ensures that your component sa";
+  const length = data.length;
+  const half = Math.floor(length / 2);
+  
+  const data_1 = data.slice(0, half);
+  const data_2 = data.slice(half);
+  
+  console.log("First half (data_1):", data_1);
+  console.log("Second half (data_2):", data_2);
+  
   const handleFileChange = async (e) => {
     setSelectedFile(e.target.files[0]);
     const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT;
@@ -51,18 +61,23 @@ export const QuickTest = () => {
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-12 gap-4 p-6">
-      <div className="md:col-span-8 p-5">
-        <div className="border-2 border-gray-300 w-10/12 h-full md:h-3/6 flex items-center justify-center">
+      <div className="md:col-span-3 p-5">
+        <div className="border-2 border-gray-300 w-5/7 h-full md:h-3/6 flex items-center justify-center">
           {selectedFile ? (
-            <img
+           <div>
+             <img
               src={URL.createObjectURL(selectedFile)}
               alt="Test"
               className="object-cover w-full h-full"
             />
+           </div>
           ) : (
             <p className="text-gray-500">Test image will show up here</p>
           )}
         </div>
+        <div className="text-white">{data_2}</div>
+      </div>
+      <div className="md:col-span-5">
         <div className="mt-5">
           {loading ? (
             <div className=" ms-28 mt-24">
@@ -82,7 +97,9 @@ export const QuickTest = () => {
                     <label className="font-extrabold text-sky-400">
                       Description :{" "}
                     </label>
-                    {description}
+                    <span>
+                      {data_1}
+                    </span>
                   </p>
                 </>
               )}
@@ -93,7 +110,6 @@ export const QuickTest = () => {
           )}
         </div>
       </div>
-
       <div className="md:col-span-4 p-5 flex flex-col">
         <label
           htmlFor="file-upload"
