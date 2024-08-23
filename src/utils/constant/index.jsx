@@ -43,32 +43,6 @@ export const Descriptions = {
       </p>
     </div>
   `,
-  SevereChickenpox: `<div class="description-container">
-      <h2 class="description-title">Measles</h2>
-      <h3 class="description-subtitle">Causes:</h3>
-      <p class="description-text">
-        Measles is caused by the measles virus, which is highly contagious and spreads through respiratory droplets from coughing and sneezing.
-      </p>
-      <h3 class="description-subtitle">Symptoms:</h3>
-      <ul class="description-list">
-        <li>Early symptoms include high fever, cough, runny nose, and red, watery eyes (conjunctivitis).</li>
-        <li>A characteristic rash develops about 3-5 days after symptoms begin, starting on the face and spreading downward to the rest of the body.</li>
-        <li>Small white spots known as Koplik's spots may appear inside the mouth before the rash.</li>
-      </ul>
-      <h3 class="description-subtitle">Treatment:</h3>
-      <ul class="description-list">
-        <li>There is no specific antiviral treatment for measles; care is supportive to relieve symptoms.</li>
-        <li>Over-the-counter medications can help reduce fever and manage pain.</li>
-        <li>Vitamin A supplements are sometimes given to children, especially in developing countries, to reduce the severity of the disease.</li>
-        <li>The MMR (measles, mumps, rubella) vaccine is highly effective in preventing measles.</li>
-      </ul>
-      <h3 class="description-subtitle">Other Relevant Details:</h3>
-      <p class="description-text">
-        Measles can lead to serious complications, including pneumonia, encephalitis, and death, especially in young children, pregnant women, and people with weakened immune systems.
-        Herd immunity through vaccination is critical to prevent outbreaks.
-      </p>
-    </div>`,
-
   Whitepatches: `<div class="description-container">
       <h2 class="description-title">Whitepatches</h2>
       <h3 class="description-subtitle">Causes:</h3>
@@ -92,4 +66,51 @@ export const Descriptions = {
         Vitiligo is not contagious or life-threatening but can have significant psychological effects due to its impact on appearance. The progression of the disease is unpredictable, and patches may spread, remain stable, or even repigment over time.
       </p>
     </div>`,
+  MildChickenpox: `<div class="description-container">
+  <h2 class="description-title">Mild Chickenpox</h2>
+  
+  <h3 class="description-subtitle">Symptoms:</h3>
+  <p class="description-text">
+    In mild cases of chickenpox, the symptoms are generally less intense and easier to manage. The infection often begins with a slight fever, a mild headache, and a general sense of feeling unwell. Soon after, a characteristic rash appears, starting as small, red spots on the face, scalp, chest, and back. These spots quickly develop into fluid-filled blisters that are extremely itchy.
+    As the days pass, these blisters will burst and form scabs, usually healing without scarring. The entire process from the appearance of the rash to the formation of scabs typically takes about 7-10 days.
+  </p>
+  
+  <h3 class="description-subtitle">Treatment:</h3>
+  <ul class="description-list">
+    <li>Treatment for mild chickenpox focuses on relieving symptoms and making the affected individual as comfortable as possible. Rest is crucial, as the body needs energy to fight off the infection.</li>
+    <li>Staying well-hydrated is also important to support the immune system.</li>
+    <li>Itching, which can be quite bothersome, can be soothed with calamine lotion, cool baths mixed with colloidal oatmeal, and wearing loose, soft clothing.</li>
+    <li>Acetaminophen (Tylenol) can be used to reduce fever and relieve discomfort, but it's important to avoid aspirin, especially in children, due to the risk of Reye’s syndrome.</li>
+    <li>In some cases, an antihistamine may be recommended by a healthcare provider to help reduce itching.</li>
+  </ul>
+
+  <h3 class="description-subtitle">Precautions:</h3>
+  <p class="description-text">
+    To prevent the spread of chickenpox, individuals with mild symptoms should be kept away from others, especially those who have not had chickenpox or the vaccine. Isolation should continue until all the blisters have crusted over. It’s important to avoid scratching the blisters to prevent secondary infections and scarring. Regular hand washing and keeping nails trimmed short can also reduce the risk of complications from scratching.
+  </p>
+</div>`,
+  SevereChickenpox: `<div class="description-container">
+  <h2 class="description-title">Severe Chickenpox</h2>
+  
+  <h3 class="description-subtitle">Symptoms:</h3>
+  <p class="description-text">
+    Severe chickenpox is characterized by more intense symptoms and a higher risk of complications. In these cases, the fever is usually higher, and the individual may experience severe headaches, body aches, and extreme fatigue. The rash tends to be more widespread, covering large areas of the body with blisters that are larger, more painful, and more prone to becoming infected.
+    In addition to these symptoms, severe chickenpox can lead to complications such as pneumonia, inflammation of the brain (encephalitis), or serious bacterial skin infections. These complications are more likely to occur in adults, pregnant women, newborns, and individuals with weakened immune systems.
+  </p>
+  
+  <h3 class="description-subtitle">Treatment:</h3>
+  <ul class="description-list">
+    <li>Severe cases of chickenpox require immediate medical attention. Antiviral medications, such as Acyclovir, may be prescribed to reduce the severity and duration of the illness.</li>
+    <li>In some cases, hospitalization might be necessary, especially if the patient needs intravenous antiviral therapy or if there are complications like dehydration or pneumonia.</li>
+    <li>In addition to antiviral treatment, pain management is crucial. Healthcare providers may prescribe stronger medications to control pain and fever.</li>
+    <li>If secondary bacterial infections occur, antibiotics may be required.</li>
+  </ul>
+  
+  <h3 class="description-subtitle">Precautions:</h3>
+  <p class="description-text">
+    For severe chickenpox, strict isolation is essential to prevent the spread of the virus, particularly in environments like hospitals where there are many vulnerable individuals. Patients should avoid contact with people who are at high risk of complications, such as pregnant women, newborns, and those with compromised immune systems.
+    Regular monitoring by healthcare professionals is critical to detect any signs of complications early. Vaccination remains the best preventive measure for those who have never had chickenpox or the vaccine, particularly for individuals at risk of severe disease.
+  </p>
+</div>
+`,
 };
