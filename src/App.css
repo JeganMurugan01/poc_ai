@@ -1,6 +1,46 @@
 /* App.css */
 .backdrop-filter {
-    backdrop-filter: blur(10px) brightness(0.9);
-    -webkit-backdrop-filter: blur(10px) brightness(0.9);
-  }
-  
+  backdrop-filter: blur(10px) brightness(0.9);
+  -webkit-backdrop-filter: blur(10px) brightness(0.9);
+}
+
+
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+
+.description-title {
+  font-size: 24px;
+  color: #007fff;
+  /* Accent color matching the buttons */
+  margin-bottom: 15px;
+  border-bottom: 2px solid #007fff;
+  padding-bottom: 5px;
+}
+
+.description-subtitle {
+  font-size: 18px;
+  color: #cfd8dc;
+  /* Consistent with body text for readability */
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.description-text {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.description-list {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+ul.description-list li {
+  margin-bottom: 10px;
+}
