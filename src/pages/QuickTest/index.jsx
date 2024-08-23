@@ -1,16 +1,19 @@
-/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import { Descriptions } from "../../utils/constant";
 import { PropagateLoader } from "react-spinners";
 import ProgressBar from "@ramonak/react-progress-bar";
 import "../../App.css";
+
 export const QuickTest = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [testResult, setTestResult] = useState([]);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [hasSevereChickenpox, setHasSevereChickenpox] = useState(false);
+  console.log(hasSevereChickenpox, "hasSevereChickenpox");
   let normalizedTagName;
   let descriptionKey;
+
   const handleFileChange = async (e) => {
     setSelectedFile(e.target.files[0]);
     const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT;
@@ -23,8 +26,7 @@ export const QuickTest = () => {
 
     try {
       let results = await fetch(
-        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=46b47cc6-0ea1-4387-ad7b-9bafa13d0f85
- `,
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=46b47cc6-0ea1-4387-ad7b-9bafa13d0f85`,
         {
           method: "POST",
           headers: {
@@ -35,6 +37,7 @@ export const QuickTest = () => {
       );
       results = await results.json();
       const predictions = results.predictions;
+
       const highestProbabilityIndex = predictions.reduce(
         (maxIndex, current, index, array) => {
           return current.probability > array[maxIndex].probability
@@ -45,6 +48,9 @@ export const QuickTest = () => {
       );
       const data = predictions[highestProbabilityIndex];
       normalizedTagName = data.tagName.replace(/\s+/g, "").toLowerCase();
+      setHasSevereChickenpox(
+        normalizedTagName === "severechickenpox" ? true : false
+      );
       descriptionKey = Object.keys(Descriptions).find(
         (key) => key.toLowerCase() === normalizedTagName
       );
@@ -74,9 +80,11 @@ export const QuickTest = () => {
           the technology, this page provides quick and reliable results to
           assist in early detection and diagnosis.
         </p>
-        <h2 className="text-red-600 font-medium text-2xl mb-5 text-center font-bold mt-2 ">
-          Warning: Severe symptoms detected—seek immediate medical attention!
-        </h2>
+        {hasSevereChickenpox && (
+          <h2 className="text-red-600 font-medium text-2xl mb-5 text-center font-bold mt-2">
+            Warning: Severe symptoms detected—seek immediate medical attention!
+          </h2>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
