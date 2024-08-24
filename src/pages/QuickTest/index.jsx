@@ -121,7 +121,7 @@ export const QuickTest = () => {
             File formats accepted: jpg, png.
           </p>
           {loading ? (
-            <div className="ms-28 mt-24">
+            <div className="ms-52 mt-24">
               <PropagateLoader color="#ffffff" />
             </div>
           ) : (
