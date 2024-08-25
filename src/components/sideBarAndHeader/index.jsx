@@ -8,7 +8,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
- 
+
 const SideBarHeader = ({
   tags,
   tagImages,
@@ -35,12 +35,12 @@ const SideBarHeader = ({
     //   setNewTagName("");
     //   setIsAddingTag(false);
     // }
- 
+
     if (!newTagName) {
       alert("please enter a tag name");
       return;
     }
- 
+
     const projectId = import.meta.env.VITE_PROJECT_ID;
     const trainingEndpoint = import.meta.env.VITE_TRAINING_ENDPOINT;
     const trainingKey = import.meta.env.VITE_TRAINING_KEY;
@@ -54,7 +54,7 @@ const SideBarHeader = ({
         },
       }
     );
- 
+
     results = await results.json();
     console.log(results);
     toast.success("Tag Added Successfully");
@@ -62,7 +62,7 @@ const SideBarHeader = ({
     setNewTagName("");
     setIsAddingTag(false);
   };
- 
+
   const handleImageSelect = (index) => {
     // setSelectedImages((prevSelected) => {
     //   if (prevSelected.includes(index)) {
@@ -80,18 +80,18 @@ const SideBarHeader = ({
     });
     console.log(selectedImages);
   };
- 
+
   const handleDeleteSelectedImages = () => {
     handleImageDelete(tempTagId, selectedImages);
     setSelectedImages([]);
   };
- 
+
   const handleSelectAllImages = () => {
     const allImageIndices = tagImages.map((_, index) => index) || [];
     console.log("Selecting all images:", allImageIndices);
     setSelectedImages(allImageIndices);
   };
- 
+
   const filteredTags =
     tags &&
     tags.length &&
@@ -143,6 +143,7 @@ const SideBarHeader = ({
                     >
                       Home
                     </button>
+
                     <button
                       onClick={handleTrainModule}
                       disabled={isTraining}
@@ -154,21 +155,24 @@ const SideBarHeader = ({
                     </button>
                   </div>
                 ) : (
-                  <button
-                    onClick={() => nav("/Admin")}
-                    className="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
-                  >
-                    Admin
-                  </button>
+                  <>
+                    <button
+                      onClick={() => nav("/Admin")}
+                      className="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
+                    >
+                      Admin
+                    </button>
+                    <button className="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700 cursor-not-allowed">
+                      Prediction history
+                    </button>
+                  </>
                 )}
               </div>
             </div>
           </div>
         </div>
       </nav>
-      {location.pathname === "/" ? (
-        null
-      ) : (
+      {location.pathname === "/" ? null : (
         <aside
           id="logo-sidebar"
           className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full  border-r border-gray-200 sm:translate-x-0 bg-gray-800 border-gray-700"
@@ -255,9 +259,11 @@ const SideBarHeader = ({
           ) : null}
         </aside>
       )}
-      <div className={`p-8 mt-12 bg-gray-700 min-h-screen ${
-        location.pathname === '/Admin' ? 'sm:ml-64' : ''
-      }`}>
+      <div
+        className={`p-8 mt-12 bg-gray-700 min-h-screen ${
+          location.pathname === "/Admin" ? "sm:ml-64" : ""
+        }`}
+      >
         {location.pathname === "/Admin" && !Page ? (
           <>
             <div className="flex items-center mb-4 p-4 ">
@@ -275,7 +281,7 @@ const SideBarHeader = ({
                   </label>
                 </>
               )}
- 
+
               {Array.isArray(tagImages) && tagImages.length > 0 && (
                 <>
                   <label
@@ -329,6 +335,5 @@ const SideBarHeader = ({
     </>
   );
 };
- 
+
 export default SideBarHeader;
- 
