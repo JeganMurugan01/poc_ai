@@ -129,7 +129,7 @@ const SideBarHeader = ({
                   }}
                   className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white cursor-pointer"
                 >
-                  Skin Disease Prediction
+                  Skin Disease Prediction AI Tool
                 </span>
               </p>
             </div>

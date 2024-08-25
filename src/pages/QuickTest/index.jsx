@@ -26,7 +26,9 @@ export const QuickTest = () => {
 
     try {
       let results = await fetch(
-        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=46b47cc6-0ea1-4387-ad7b-9bafa13d0f85`,
+        `${trainingEndpoint}customvision/v3.3/Training/projects/${projectId}/quicktest/image?iterationId=6a5bc062-e530-403c-8b3a-6faf6a9e2604
+ 
+ `,
         {
           method: "POST",
           headers: {
@@ -106,7 +108,7 @@ export const QuickTest = () => {
         <div className="md:col-span-4 flex flex-col">
           <label
             htmlFor="file-upload"
-            className="bg-blue-500 text-white font-medium py-2 text-center px-4 md:px-[8%] rounded-lg hover:bg-blue-600 w-full mb-4 cursor-pointer"
+            className="bg-blue-500 text-white font-medium py-2  text-center px-4 md:px-[8%] rounded-lg hover:bg-blue-600 mb-4 cursor-pointer"
           >
             Browse local files
             <input
@@ -137,12 +139,7 @@ export const QuickTest = () => {
                         <p className="text-white">{result.tagName}</p>
                         <ProgressBar
                           completed={(result.probability * 100).toFixed(2)}
-                          bgColor={
-                            result.probability * 100 > 90 &&
-                            result.tagName === "Severe Chickenpox"
-                              ? "#FF0000"
-                              : "#007fff"
-                          }
+                          bgColor={"#007fff"}
                           labelColor="#ffffff"
                           animateOnRender
                           labelAlignment={"outside"}

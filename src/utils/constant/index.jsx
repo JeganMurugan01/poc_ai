@@ -113,4 +113,32 @@ export const Descriptions = {
   </p>
 </div>
 `,
+  Psoriasis: `<div class="description-container">
+  <h2 class="description-title">Psoriasis</h2>
+  
+  <h3 class="description-subtitle">Causes:</h3>
+  <p class="description-text">
+    Psoriasis is a chronic autoimmune condition that causes the rapid buildup of skin cells, leading to scaling on the skin's surface. The exact cause is unknown, but it involves an immune system problem where T cells mistakenly attack healthy skin cells.
+  </p>
+  
+  <h3 class="description-subtitle">Symptoms:</h3>
+  <ul class="description-list">
+    <li>Symptoms include red patches of skin covered with thick, silvery scales, dry and cracked skin that may bleed, itching, burning, or soreness, and thickened or ridged nails.</li>
+    <li>The most common type is plaque psoriasis, characterized by raised, inflamed, red patches covered with silvery-white scales.</li>
+  </ul>
+  
+  <h3 class="description-subtitle">Treatment:</h3>
+  <ul class="description-list">
+    <li>Topical treatments like corticosteroids, vitamin D analogs, and retinoids are often used.</li>
+    <li>Phototherapy, including exposure to ultraviolet light, is also common.</li>
+    <li>Systemic treatments, including oral or injectable medications like methotrexate, cyclosporine, and biologics, are used for more severe cases.</li>
+    <li>Lifestyle changes, such as stress management, moisturizing regularly, and avoiding triggers, can help manage symptoms.</li>
+  </ul>
+  
+  <h3 class="description-subtitle">Other Relevant Details:</h3>
+  <p class="description-text">
+    Psoriasis is associated with other health conditions, including psoriatic arthritis, cardiovascular disease, and depression. The disease can significantly affect quality of life, with periods of flare-ups and remission.
+  </p>
+</div>
+`,
 };
